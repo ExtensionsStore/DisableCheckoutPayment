@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * DisableCheckoutPayment module config
+ *
+ * @category   Aydus
+ * @package	   Aydus_DisableCheckoutPayment
+ * @author     Aydus Consulting <davidt@aydus.com>
+ */
+-->
+<config>
+    <modules>
+        <Aydus_DisableCheckoutPayment>
+            <version>1.0.0</version>
+        </Aydus_DisableCheckoutPayment>
+    </modules>
+    <frontend>
+	    <events>
+	        <payment_method_is_active>
+	            <observers>
+	                <disable_checkout>
+	                    <type>singleton</type>
+	                    <class>aydus_checkoutpayment/observer</class>
+	                    <method>disableCheckout</method>
+	                </disable_checkout>
+	            </observers>
+	        </payment_method_is_active>
+	    </events>    
+    </frontend>
+    <global>
+        <events>
+            <adminhtml_init_system_config>
+                <observers>
+                    <aydus_system_config>
+                        <class>aydus_checkoutpayment/observer</class>
+                        <method>addDisableCheckoutFields</method>
+                    </aydus_system_config>
+                </observers>
+            </adminhtml_init_system_config>
+        </events>      
+        <helpers>
+            <aydus_checkoutpayment>
+                <class>Aydus_DisableCheckoutPayment_Helper</class>
+            </aydus_checkoutpayment>
+        </helpers>
+        <models>
+            <aydus_checkoutpayment>
+                <class>Aydus_DisableCheckoutPayment_Model</class>
+            </aydus_checkoutpayment>
+        </models>
+    </global>                       
+</config>
