@@ -16,7 +16,7 @@ class Aydus_DisableCheckoutPayment_Model_Observer
      * @param Mage_Core_Model_Observer $observer
      * @return Aydus_DisableCheckoutPayment_Model_Observer
      */
-    public function addDisableCheckoutFields($observer)
+    public function addDisableCheckoutPaymentFields($observer)
     {
         $config = $observer->getConfig();
     
@@ -45,7 +45,7 @@ class Aydus_DisableCheckoutPayment_Model_Observer
                 $disableCheckout = $fields->addChild('disable_checkout');
                 
                 $disableCheckout->addAttribute('translate', 'label');
-                $disableCheckout->addAttribute('module', 'aydus_checkoutpayment');
+                $disableCheckout->addAttribute('module', 'aydus_disablecheckoutpayment');
                 
                 $disableCheckout->addChild('label', 'Disable Checkout');
                 $disableCheckout->addChild('frontend_type', 'select');

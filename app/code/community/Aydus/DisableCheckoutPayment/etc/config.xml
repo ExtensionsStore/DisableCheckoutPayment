@@ -20,7 +20,7 @@
 	            <observers>
 	                <disable_checkout>
 	                    <type>singleton</type>
-	                    <class>aydus_checkoutpayment/observer</class>
+	                    <class>aydus_disablecheckoutpayment/observer</class>
 	                    <method>disableCheckout</method>
 	                </disable_checkout>
 	            </observers>
@@ -31,22 +31,22 @@
         <events>
             <adminhtml_init_system_config>
                 <observers>
-                    <aydus_system_config>
-                        <class>aydus_checkoutpayment/observer</class>
-                        <method>addDisableCheckoutFields</method>
-                    </aydus_system_config>
+                    <aydus_disablecheckoutpayment_system_config>
+                        <class>aydus_disablecheckoutpayment/observer</class>
+                        <method>addDisableCheckoutPaymentFields</method>
+                    </aydus_disablecheckoutpayment_system_config>
                 </observers>
             </adminhtml_init_system_config>
         </events>      
         <helpers>
-            <aydus_checkoutpayment>
+            <aydus_disablecheckoutpayment>
                 <class>Aydus_DisableCheckoutPayment_Helper</class>
-            </aydus_checkoutpayment>
+            </aydus_disablecheckoutpayment>
         </helpers>
         <models>
-            <aydus_checkoutpayment>
+            <aydus_disablecheckoutpayment>
                 <class>Aydus_DisableCheckoutPayment_Model</class>
-            </aydus_checkoutpayment>
+            </aydus_disablecheckoutpayment>
         </models>
     </global>                       
 </config>
