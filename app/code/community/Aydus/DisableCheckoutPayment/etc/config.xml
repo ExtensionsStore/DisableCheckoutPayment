@@ -4,30 +4,17 @@
  * DisableCheckoutPayment module config
  *
  * @category   Aydus
- * @package	   Aydus_DisableCheckoutPayment
- * @author     Aydus Consulting <davidt@aydus.com>
+ * @package    Aydus_DisableCheckoutPayment
+ * @author     Aydus <davidt@aydus.com>
  */
 -->
 <config>
     <modules>
         <Aydus_DisableCheckoutPayment>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </Aydus_DisableCheckoutPayment>
     </modules>
-    <frontend>
-	    <events>
-	        <payment_method_is_active>
-	            <observers>
-	                <disable_checkout>
-	                    <type>singleton</type>
-	                    <class>aydus_disablecheckoutpayment/observer</class>
-	                    <method>disableCheckout</method>
-	                </disable_checkout>
-	            </observers>
-	        </payment_method_is_active>
-	    </events>    
-    </frontend>
-    <global>
+    <adminhtml>
         <events>
             <adminhtml_init_system_config>
                 <observers>
@@ -37,7 +24,29 @@
                     </aydus_disablecheckoutpayment_system_config>
                 </observers>
             </adminhtml_init_system_config>
-        </events>      
+        </events>            
+    </adminhtml>
+    <frontend>
+        <events>
+            <payment_method_is_active>
+                <observers>
+                    <disable_checkout>
+                        <type>singleton</type>
+                        <class>aydus_disablecheckoutpayment/observer</class>
+                        <method>disableCheckout</method>
+                    </disable_checkout>
+                </observers>
+            </payment_method_is_active>
+        </events>    
+    </frontend>
+    <phpunit>
+        <suite>
+            <modules>
+                <Aydus_DisableCheckoutPayment />
+            </modules>
+        </suite>
+    </phpunit>    
+    <global>  
         <helpers>
             <aydus_disablecheckoutpayment>
                 <class>Aydus_DisableCheckoutPayment_Helper</class>

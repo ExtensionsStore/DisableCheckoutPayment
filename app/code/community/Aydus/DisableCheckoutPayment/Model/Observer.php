@@ -4,8 +4,8 @@
  * Disable checkout observer
  *
  * @category   Aydus
- * @package	   Aydus_DisableCheckoutPayment
- * @author     Aydus Consulting <davidt@aydus.com>
+ * @package    Aydus_DisableCheckoutPayment
+ * @author     Aydus <davidt@aydus.com>
  */
 
 class Aydus_DisableCheckoutPayment_Model_Observer 
@@ -13,8 +13,9 @@ class Aydus_DisableCheckoutPayment_Model_Observer
     /**
      * Add disable checkout field to all payment groups
      *
+     * @see adminhtml_init_system_config
      * @param Mage_Core_Model_Observer $observer
-     * @return Aydus_DisableCheckoutPayment_Model_Observer
+     * @return Varien_Event_Observer
      */
     public function addDisableCheckoutPaymentFields($observer)
     {
@@ -32,21 +33,31 @@ class Aydus_DisableCheckoutPayment_Model_Observer
                 'cashondelivery' => 15,
                 'authorizenet' => 2,
                 'authorizenet_directpost' => 15,
-        );
+        );        
         
-        $usualPaymentGroupsKeys = array_keys($usualPaymentGroups);
-    
-        foreach ($paymentGroups->children() as $group => $element){
-            	
-            $fields = &$element->fields;
+        $methods = array_keys((array)$paymentGroups);
+        
+        foreach ($usualPaymentGroups as $method => $position){
             
+            if (!in_array($method, $methods)){
+                $observer->setAddedDisableCheckoutPaymentFields(false);
+                return $observer;
+            }
+        }
+
+        $usualPaymentGroupsKeys = array_keys($usualPaymentGroups);
+
+        foreach ($paymentGroups->children() as $group => $element){
+
+            $fields = &$element->fields;
+
             if (!$fields->disable_checkout){
-                
+
                 $disableCheckout = $fields->addChild('disable_checkout');
-                
+
                 $disableCheckout->addAttribute('translate', 'label');
                 $disableCheckout->addAttribute('module', 'aydus_disablecheckoutpayment');
-                
+
                 $disableCheckout->addChild('label', 'Disable Checkout');
                 $disableCheckout->addChild('frontend_type', 'select');
                 $disableCheckout->addChild('source_model', 'adminhtml/system_config_source_yesno');
@@ -54,14 +65,16 @@ class Aydus_DisableCheckoutPayment_Model_Observer
                 $disableCheckout->addChild('sort_order', $sortOrder);
                 $disableCheckout->addChild('show_in_default', 1);
                 $disableCheckout->addChild('show_in_website', 1);
-                $disableCheckout->addChild('show_in_store', 1);
+                $disableCheckout->addChild('show_in_store', 0);
                 $disableCheckout->addChild('comment', 'Disable front end checkout.');
-                                
+
             }
-            	
-        }
-    
-        return $this;
+
+        }       
+        
+        $observer->setAddedDisableCheckoutPaymentFields(true);
+            
+        return $observer;
     }
         
     /**
@@ -69,7 +82,7 @@ class Aydus_DisableCheckoutPayment_Model_Observer
      * Disable payment method on front end if set as disabled
      * 
      * @param Varien_Event_Observer $observer
-     * @return Aydus_DisableCheckoutPayment_Model_Observer
+     * @return Varien_Event_Observer
      */
     public function disableCheckout($observer)
     {
@@ -80,15 +93,16 @@ class Aydus_DisableCheckoutPayment_Model_Observer
         $storeId = Mage::app()->getStore()->getId();
         
         $disableCheckout = Mage::getStoreConfig("payment/$code/disable_checkout", $storeId);
-        
+                
         if ($disableCheckout){
             
             $result->isAvailable = false;
             
             $observer->setResult($result);
+            
         }
         
-        return $this;
+        return $observer;
     }
    
 }
